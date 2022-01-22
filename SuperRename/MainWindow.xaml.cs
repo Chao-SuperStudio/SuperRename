@@ -4,6 +4,7 @@ using SuperRename.Core.Utils;
 using SuperRename.VieModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,8 +40,9 @@ namespace SuperRename
             {
                 for (int i = 0; i < dragdropFiles.Length; i++)
                 {
-                    Console.WriteLine(dragdropFiles[i]);
+                    vieModel.DataList.Add(new FileData(true, dragdropFiles[i], dragdropFiles[i]));
                 }
+                vieModel.DataListCountChange();
             }
 
         }
@@ -74,6 +76,33 @@ namespace SuperRename
             {
                 ChaoControls.Style.MessageCard.Show("文件名非法，请修改后再执行");
                 return;
+            }
+
+            int breakCount = 0;
+            List<FileData> success = new List<FileData>();
+
+            if (vieModel?.DataList.Count > 0)
+            {
+                // 执行修改
+                for (int i = 0; i < vieModel.DataList.Count; i++)
+                {
+                    FileData data = vieModel.DataList[i];
+                    string source = data.Source;
+                    string target = data.Target;
+                    if (source.Equals(target)) continue;
+                    try
+                    {
+                        File.Move(vieModel.DataList[i].Source, vieModel.DataList[i].Target);
+                        success.Add(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        ChaoControls.Style.MessageCard.Show(ex.Message);
+                        breakCount++;
+                        if (breakCount >= 10) break;
+                    }
+                }
+                ChaoControls.Style.MessageCard.Show($"修改文件名：{success.Count}/{vieModel.DataList.Count}", MessageCard.MessageCardType.Succes);
             }
         }
 
@@ -116,6 +145,10 @@ namespace SuperRename
             textBox.Foreground = brush;
         }
 
-
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            vieModel.DataList.Clear();
+            vieModel.DataListCountChange();
+        }
     }
 }

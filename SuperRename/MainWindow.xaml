@@ -19,6 +19,15 @@
 
     <chao:BaseWindow.Resources>
 
+        <Style
+            x:Key="CommonButton"
+            BasedOn="{StaticResource FillButton}"
+            TargetType="Button">
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Background" Value="#409EFF" />
+        </Style>
+
         <Style x:Key="HoverSpliter" TargetType="GridSplitter">
             <Setter Property="Background" Value="Gray" />
             <Setter Property="Margin" Value="0" />
@@ -62,12 +71,25 @@
     </chao:BaseWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <StackPanel Orientation="Horizontal">
+            <Button
+                Content="选择文件"
+                Style="{StaticResource CommonButton}"
+                Visibility="Collapsed" />
+            <Button
+                Background="#F56C6C"
+                Click="Button_Click"
+                Content="清空"
+                Style="{StaticResource CommonButton}" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
             <DataGrid
                 x:Name="dataGrid"
                 Margin="0"
@@ -100,7 +122,7 @@
                 Visibility="Visible">
 
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="auto" MinWidth="40">
+                    <DataGridTemplateColumn Width="auto" MinWidth="45">
                         <DataGridTemplateColumn.Header>
                             <CheckBox
                                 HorizontalAlignment="Center"
@@ -118,14 +140,17 @@
                                     HorizontalAlignment="Center"
                                     Background="#38C550"
                                     Foreground="White"
-                                    IsChecked="{Binding Enable, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                    IsChecked="{Binding Enable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource NormalCheckBox}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
 
-                    <DataGridTemplateColumn Width="auto" Header="序号">
+                    <DataGridTemplateColumn
+                        Width="auto"
+                        MinWidth="40"
+                        Header="序号">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox
@@ -137,7 +162,11 @@
                     </DataGridTemplateColumn>
 
 
-                    <DataGridTemplateColumn Width="150" Header="原名">
+
+                    <DataGridTemplateColumn
+                        Width="150"
+                        MinWidth="100"
+                        Header="原名">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox
@@ -148,7 +177,15 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Width="150" Header="目标名">
+                    <!--<DataGridTextColumn
+                        Width="SizeToCells"
+                        Binding="{Binding Target, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Header="目标名" />-->
+
+                    <DataGridTemplateColumn
+                        Width="150"
+                        MinWidth="800"
+                        Header="目标名">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox
@@ -158,20 +195,30 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+
+
+
                 </DataGrid.Columns>
 
 
             </DataGrid>
+
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Text="拖入文件"
+                Visibility="{Binding ShowDragHint}" />
         </Grid>
 
         <GridSplitter
-            Grid.Row="1"
+            Grid.Row="2"
             Height="2"
             HorizontalAlignment="Stretch"
             Style="{StaticResource HoverSpliter}" />
 
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
@@ -190,7 +237,7 @@
                     Width="200"
                     Height="30"
                     Margin="5"
-                    Padding="5 0"
+                    Padding="5,0"
                     VerticalAlignment="Top"
                     Background="Transparent"
                     BorderBrush="#326CF3"
@@ -200,19 +247,17 @@
                     PlaceHolderForeground="Gray"
                     ShowClearButton="True"
                     ShowSearchButton="False"
-                    Text="{Binding Ext,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                    Text="{Binding Ext, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </WrapPanel>
 
             <Button
                 Grid.Column="1"
-                Width="100"
-                Height="50"
                 Margin="10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Click="BeginChangeName"
                 Content="执行"
-                Style="{StaticResource FillButton}" />
+                Style="{StaticResource CommonButton}" />
         </Grid>
     </Grid>
 </chao:BaseWindow>

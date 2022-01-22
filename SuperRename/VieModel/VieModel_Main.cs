@@ -8,12 +8,17 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SuperRename.VieModel
 {
     public class VieModel_Main : ViewModelBase
     {
 
+        public void DataListCountChange()
+        {
+            ShowDragHint = DataList?.Count <= 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
 
         private ObservableCollection<FileData> _DataList;
         public ObservableCollection<FileData> DataList
@@ -47,6 +52,17 @@ namespace SuperRename.VieModel
             }
         }
 
+        private Visibility _ShowDragHint;
+        public Visibility ShowDragHint
+        {
+            get { return _ShowDragHint; }
+            set
+            {
+                _ShowDragHint = value;
+                RaisePropertyChanged();
+            }
+        }
+
 
 
         public void ApplyChanges()
@@ -56,7 +72,8 @@ namespace SuperRename.VieModel
             {
                 for (int i = 0; i < DataList.Count; i++)
                 {
-                    DataList[i].Target = Path.GetDirectoryName(DataList[i].Target) + Path.GetFileNameWithoutExtension(DataList[i].Target) + "." + Ext;
+                    DataList[i].Target = Path.Combine(Path.GetDirectoryName(DataList[i].Target),
+                        Path.GetFileNameWithoutExtension(DataList[i].Target) + "." + Ext);
                 }
             }
         }
@@ -65,7 +82,9 @@ namespace SuperRename.VieModel
 
         public VieModel_Main()
         {
-            LoadSample();
+            DataList = new ObservableCollection<FileData>();
+            DataListCountChange();
+            //LoadSample();
         }
 
         private void LoadSample()
@@ -75,6 +94,7 @@ namespace SuperRename.VieModel
             {
                 DataList.Add(new FileData(true, $"d:\\file{i}.zip", "d:\\new_file" + (i % 3 == 0 ? "/" : "") + $"{i}.zip"));
             }
+            DataListCountChange();
         }
     }
 }
