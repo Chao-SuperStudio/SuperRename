@@ -40,8 +40,9 @@
     <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ChaoControls.Style">
-      <HintPath>..\..\chao-controls\ChaoControls.Style\bin\Debug\ChaoControls.Style.dll</HintPath>
+    <Reference Include="ChaoControls.Style, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Visual_Studio_Project\chao-controls\ChaoControls.Style\bin\Debug\ChaoControls.Style.dll</HintPath>
     </Reference>
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
@@ -62,6 +63,10 @@
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero2" />
+    <Reference Include="SuperCommonUtils">
+      <HintPath>..\..\SuperCommonUtils\SuperCommonUtils\SuperCommonUtils\bin\Debug\SuperCommonUtils.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -275,6 +280,33 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Test\sample1.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Test\sample2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Test\sample3.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Test\dir1\sample1.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Test\dir1\sample2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Test\dir1\sample3.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Test\dir2\sample1.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Test\dir2\sample2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Test\dir2\sample3.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

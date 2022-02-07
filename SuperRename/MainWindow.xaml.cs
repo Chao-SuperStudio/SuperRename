@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SuperStudio.CommonUtils;
 
 namespace SuperRename
 {
@@ -32,6 +33,7 @@ namespace SuperRename
             InitializeComponent();
             vieModel = new VieModel_Main();
             this.DataContext = vieModel;
+            ScanDir(@"D:\SuperStudio\SuperRename\SuperRename\Test");
         }
 
         private void DataGrid_Drop(object sender, DragEventArgs e)
@@ -73,11 +75,7 @@ namespace SuperRename
 
         private void BeginChangeName(object sender, RoutedEventArgs e)
         {
-            if (!CheckNameProper())
-            {
-                ChaoControls.Style.MessageCard.Show("文件名非法，请修改后再执行");
-                return;
-            }
+
 
             int breakCount = 0;
             List<FileData> success = new List<FileData>();
@@ -90,7 +88,11 @@ namespace SuperRename
                     FileData data = vieModel.DataList[i];
                     string source = data.Source;
                     string target = data.Target;
-                    if (source.Equals(target)) continue;
+                    if (source.Equals(target))
+                    {
+                        data.StatusMessage = "跳过";
+                        continue;
+                    }
                     try
                     {
                         File.Move(vieModel.DataList[i].Source, vieModel.DataList[i].Target);
@@ -105,6 +107,8 @@ namespace SuperRename
                 }
                 ChaoControls.Style.MessageCard.Show($"修改文件名：{success.Count}/{vieModel.DataList.Count}", MessageCard.MessageCardType.Succes);
             }
+
+            vieModel.CanRun = false;
         }
 
         private bool CheckNameProper()
@@ -118,7 +122,7 @@ namespace SuperRename
                 if (data.Enable)
                 {
                     string target = data.Target;
-                    if (string.IsNullOrEmpty(target) || !FileUtils.IsProperPath(target))
+                    if (string.IsNullOrEmpty(target) || !FileUtil.IsProperPath(target))
                     {
                         wrongList.Add(i);
                     }
@@ -180,6 +184,106 @@ namespace SuperRename
         private void ToolsPanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SetTogglePanelStatus(true);
+        }
+
+        private void ScanDir(object sender, RoutedEventArgs e)
+        {
+            string dir = FileUtil.SelectPath(this, "选择需要扫描的文件夹");
+            ScanDir(dir);
+        }
+
+        private void ScanDir(string dir)
+        {
+            if (!Directory.Exists(dir)) return;
+            IEnumerable<string> lists = FileUtil.GetFileList("*.*", dir);
+            foreach (string filePath in lists)
+            {
+                vieModel.DataList.Add(new FileData(true, filePath, filePath));
+            }
+            vieModel.DataListCountChange();
+        }
+
+        private void PathButton_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SelectAll(object sender, RoutedEventArgs e)
+        {
+            SetEnable(true);
+        }
+
+        private void UnSelectAll(object sender, RoutedEventArgs e)
+        {
+            SetEnable(false);
+        }
+
+        private void SelectOppsite(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < vieModel.DataList.Count; i++)
+            {
+                vieModel.DataList[i].Enable = !vieModel.DataList[i].Enable;
+            }
+        }
+
+        private void RemoveDir(object sender, RoutedEventArgs e)
+        {
+            for (int i = vieModel.DataList.Count - 1; i >= 0; i--)
+            {
+                if (!FileUtil.IsFile(vieModel.DataList[i].Source)) vieModel.DataList.Remove(vieModel.DataList[i]);
+            }
+        }
+
+        private void RemoveFile(object sender, RoutedEventArgs e)
+        {
+            for (int i = vieModel.DataList.Count - 1; i >= 0; i--)
+            {
+                if (FileUtil.IsFile(vieModel.DataList[i].Source)) vieModel.DataList.Remove(vieModel.DataList[i]);
+            }
+        }
+
+        private void CopyAll(object sender, RoutedEventArgs e)
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach (var item in vieModel.DataList)
+            {
+                builder.Append(item.Source + " | " + item.Target + Environment.NewLine);
+            }
+            System.Windows.Forms.Clipboard.SetDataObject(builder.ToString(), false, 5, 200);
+        }
+
+        private void Export(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RemoveSelect(object sender, RoutedEventArgs e)
+        {
+            for (int i = vieModel.DataList.Count - 1; i >= 0; i--)
+            {
+                if (vieModel.DataList[i].Enable) vieModel.DataList.Remove(vieModel.DataList[i]);
+            }
+        }
+
+        private void Preview(object sender, RoutedEventArgs e)
+        {
+            if (!CheckNameProper())
+            {
+                ChaoControls.Style.MessageCard.Show("文件名非法，请修改后再执行");
+                return;
+            }
+            vieModel.CanRun = true;
+        }
+
+        private void DeleteItem(object sender, RoutedEventArgs e)
+        {
+            FileData data = (FileData)dataGrid.SelectedItem;
+            Console.WriteLine(data.Source);
+        }
+
+        private void OpenDir(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

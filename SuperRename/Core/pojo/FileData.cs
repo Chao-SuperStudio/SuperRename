@@ -26,6 +26,9 @@ namespace SuperRename.Core.pojo
 
         public string _Source;
         public string Source { get { return _Source; } set { _Source = value; OnPropertyChanged(); } }
+
+        public string _StatusMessage;
+        public string StatusMessage { get { return _StatusMessage; } set { _StatusMessage = value; OnPropertyChanged(); } }
         public string _Target;
         public string Target { get { return _Target; } set { _Target = value; OnPropertyChanged(); } }
 

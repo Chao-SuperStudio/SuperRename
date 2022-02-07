@@ -52,6 +52,18 @@ namespace SuperRename.VieModel
             }
         }
 
+
+        private bool _CanRun = false;
+        public bool CanRun
+        {
+            get { return _CanRun; }
+            set
+            {
+                _CanRun = value;
+                RaisePropertyChanged();
+            }
+        }
+
         private bool _ExpandTogglePanel;
         public bool ExpandTogglePanel
         {
