@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="pack://application:,,,/ChaoControls.Style;Component/Themes/ChaoControls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ChaoControls.Style;Component/XAML/CustomControls/Switch.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ChaoControls.Style;Component/XAML/CustomControls/TogglePanel.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/SuperRename;Component/Core/Style/Button.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

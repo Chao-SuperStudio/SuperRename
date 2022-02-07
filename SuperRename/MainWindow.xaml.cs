@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -149,6 +150,36 @@ namespace SuperRename
         {
             vieModel.DataList.Clear();
             vieModel.DataListCountChange();
+        }
+
+        private void TogglePanel(object sender, RoutedEventArgs e)
+        {
+            ToggleButton btn = sender as ToggleButton;
+            SetTogglePanelStatus((bool)btn.IsChecked);
+        }
+
+        private void SetTogglePanelStatus(bool status)
+        {
+            if (status)
+            {
+                ToolsPanel.Height = 120;
+                if (rotateTransform != null)
+                    rotateTransform.Angle = 180;
+
+            }
+            else
+            {
+                ToolsPanel.Height = 30;
+                if (rotateTransform != null)
+                    rotateTransform.Angle = 0;
+            }
+            if (vieModel != null)
+                vieModel.ExpandTogglePanel = status;
+        }
+
+        private void ToolsPanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SetTogglePanelStatus(true);
         }
     }
 }

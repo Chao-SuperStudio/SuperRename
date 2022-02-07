@@ -52,6 +52,17 @@ namespace SuperRename.VieModel
             }
         }
 
+        private bool _ExpandTogglePanel;
+        public bool ExpandTogglePanel
+        {
+            get { return _ExpandTogglePanel; }
+            set
+            {
+                _ExpandTogglePanel = value;
+                RaisePropertyChanged();
+            }
+        }
+
         private Visibility _ShowDragHint;
         public Visibility ShowDragHint
         {

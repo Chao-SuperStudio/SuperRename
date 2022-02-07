@@ -226,6 +226,10 @@
     <Compile Include="Core\pojo\FileData.cs" />
     <Compile Include="Core\Utils\FileUtils.cs" />
     <Compile Include="VieModel\VieModel_Main.cs" />
+    <Page Include="Core\Style\Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
