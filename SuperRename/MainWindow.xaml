@@ -20,6 +20,29 @@
 
     <chao:BaseWindow.Resources>
 
+        <Style x:Key="SearchBoxStyle" TargetType="{x:Type chao:SearchBox}">
+            <Setter Property="MinWidth" Value="100" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Padding" Value="5,0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="#326CF3" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="PlaceHolder" Value="" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="PlaceHolderForeground" Value="Gray" />
+            <Setter Property="ShowClearButton" Value="True" />
+        </Style>
+        <Style
+            x:Key="CheckBoxStyle"
+            BasedOn="{StaticResource NormalCheckBox}"
+            TargetType="{x:Type CheckBox}">
+            <Setter Property="Background" Value="#38C550" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Tag" Value="White" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+
         <Style
             x:Key="CommonButton"
             BasedOn="{StaticResource FillButton}"
@@ -196,68 +219,49 @@
                 <TabItem Header="后缀名">
                     <WrapPanel Grid.Column="0" Orientation="Horizontal">
                         <CheckBox
-                            Background="#38C550"
                             Click="ChangeExt"
                             Content="修改后缀为"
-                            Foreground="White"
                             IsChecked="{Binding ChangeExt}"
-                            Style="{StaticResource NormalCheckBox}"
-                            Tag="White" />
+                            Style="{StaticResource CheckBoxStyle}" />
                         <chao:SearchBox
-                            Width="200"
-                            Height="30"
-                            Margin="5"
-                            Padding="5,0"
-                            VerticalAlignment="Top"
-                            Background="Transparent"
-                            BorderBrush="#326CF3"
-                            BorderThickness="1"
-                            Foreground="White"
                             PlaceHolder="后缀名"
-                            PlaceHolderForeground="Gray"
-                            ShowClearButton="True"
-                            ShowSearchButton="False"
+                            Style="{StaticResource SearchBoxStyle}"
                             Text="{Binding Ext, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
                     </WrapPanel>
 
                 </TabItem>
 
                 <TabItem Header="替换">
                     <StackPanel Orientation="Horizontal">
-                        <StackPanel
-                            Margin="5"
-                            VerticalAlignment="Top"
-                            Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="将原名称中的" />
-                            <chao:SearchBox
-                                Width="100"
-                                Height="30"
-                                Margin="5"
-                                Padding="5,0"
-                                VerticalAlignment="Top"
-                                Background="Transparent"
-                                BorderBrush="#326CF3"
-                                BorderThickness="1"
-                                Foreground="White"
-                                PlaceHolder=""
-                                PlaceHolderForeground="Gray"
-                                ShowClearButton="True"
-                                ShowSearchButton="False" />
+                        <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
+                            <CheckBox
+                                Click="ChangeExt"
+                                Content="将原名称中的"
+                                IsChecked="{Binding Replace}"
+                                Style="{StaticResource CheckBoxStyle}" />
+
+                            <chao:SearchBox Style="{StaticResource SearchBoxStyle}" Text="{Binding ToReplace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock VerticalAlignment="Center" Text="替换为" />
-                            <chao:SearchBox
-                                Width="100"
-                                Height="30"
-                                Margin="5"
-                                Padding="5,0"
+                            <chao:SearchBox Style="{StaticResource SearchBoxStyle}" Text="{Binding ReplaceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
+                            <TextBlock
+                                Margin="20,5"
+                                VerticalAlignment="Center"
+                                FontSize="15"
+                                FontWeight="Bold"
+                                Text="模式" />
+                            <RadioButton
                                 VerticalAlignment="Top"
-                                Background="Transparent"
-                                BorderBrush="#326CF3"
-                                BorderThickness="1"
-                                Foreground="White"
-                                PlaceHolder=""
-                                PlaceHolderForeground="Gray"
-                                ShowClearButton="True"
-                                ShowSearchButton="False" />
+                                Content="普通"
+                                IsChecked="True"
+                                Style="{StaticResource FlatRadioButton}" />
+                            <RadioButton
+                                VerticalAlignment="Top"
+                                Content="正则"
+                                IsChecked="{Binding UseRegex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=False}"
+                                Style="{StaticResource FlatRadioButton}" />
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
@@ -322,33 +326,15 @@
             <DataGrid
                 x:Name="dataGrid"
                 Margin="5"
+                chao:DataGrid.RowHeight="35"
                 AllowDrop="True"
-                AutoGenerateColumns="False"
-                Background="Transparent"
-                BorderBrush="#007FD4"
-                BorderThickness="2"
-                CanUserAddRows="False"
-                CanUserDeleteRows="True"
-                CanUserResizeColumns="True"
-                CanUserResizeRows="False"
-                CanUserSortColumns="True"
-                CellStyle="{DynamicResource DataGridCellStyle1}"
-                ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
                 Drop="DataGrid_Drop"
                 DropLocationIndicatorStyle="{DynamicResource DataGridStyle2}"
                 Foreground="White"
-                HorizontalGridLinesBrush="Transparent"
-                IsSynchronizedWithCurrentItem="True"
                 ItemsPanel="{DynamicResource ItemsPanelTemplate1}"
                 ItemsSource="{Binding DataList}"
-                RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}"
-                RowStyle="{DynamicResource DataGridRowStyle1}"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                Style="{DynamicResource FlatDataGridStyle}"
-                VerticalGridLinesBrush="Transparent"
-                VerticalScrollBarVisibility="Disabled"
-                Visibility="Visible">
+                Style="{DynamicResource FlatDataGrid}">
+
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Click="OpenDir" Header="打开位置" />
@@ -404,7 +390,7 @@
 
 
                     <DataGridTemplateColumn
-                        Width="200"
+                        Width="auto"
                         MinWidth="100"
                         CanUserSort="True"
                         Header="原名称"
@@ -414,7 +400,8 @@
                                 <TextBox
                                     Foreground="White"
                                     Style="{StaticResource ReadOnlyTextBox}"
-                                    Text="{Binding Source, Mode=OneWay, Converter={StaticResource SmallerPathConverter}}"
+                                    Text="{Binding Source, Mode=OneWay, Converter={StaticResource SmallerPathConverter}, ConverterParameter=1}"
+                                    TextWrapping="NoWrap"
                                     ToolTip="{Binding Source, Mode=OneWay}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

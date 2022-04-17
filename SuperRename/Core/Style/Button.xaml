@@ -9,6 +9,9 @@
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="PathHeight" Value="15" />
         <Setter Property="Fill" Value="AliceBlue" />
-        <Setter Property="TextMargin" Value="10 0 0 0" />
+        <Setter Property="Padding" Value="5,0" />
+
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="TextMargin" Value="10 5 0 5" />
     </Style>
 </ResourceDictionary>

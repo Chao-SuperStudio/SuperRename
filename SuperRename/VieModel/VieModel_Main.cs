@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -38,6 +39,46 @@ namespace SuperRename.VieModel
             set
             {
                 _Ext = value;
+                RaisePropertyChanged();
+            }
+        }
+        private bool _Replace;
+        public bool Replace
+        {
+            get { return _Replace; }
+            set
+            {
+                _Replace = value;
+                RaisePropertyChanged();
+            }
+        }
+        private bool _UseRegex;
+        public bool UseRegex
+        {
+            get { return _UseRegex; }
+            set
+            {
+                _UseRegex = value;
+                RaisePropertyChanged();
+            }
+        }
+        private string _ToReplace;
+        public string ToReplace
+        {
+            get { return _ToReplace; }
+            set
+            {
+                _ToReplace = value;
+                RaisePropertyChanged();
+            }
+        }
+        private string _ReplaceString;
+        public string ReplaceString
+        {
+            get { return _ReplaceString; }
+            set
+            {
+                _ReplaceString = value;
                 RaisePropertyChanged();
             }
         }
@@ -97,6 +138,28 @@ namespace SuperRename.VieModel
                 {
                     DataList[i].Target = Path.Combine(Path.GetDirectoryName(DataList[i].Target),
                         Path.GetFileNameWithoutExtension(DataList[i].Target) + "." + Ext);
+                }
+            }
+            // 替换
+            if (Replace && !string.IsNullOrEmpty(ToReplace))
+            {
+                string replaceMent = ReplaceString;
+                if (string.IsNullOrEmpty(replaceMent)) replaceMent = "";
+                for (int i = 0; i < DataList.Count; i++)
+                {
+                    string originDir = Path.GetDirectoryName(DataList[i].Source);
+                    string originName = Path.GetFileName(DataList[i].Source);
+                    string targetName = originName;
+                    if (UseRegex)
+                    {
+                        targetName = Regex.Replace(originName, ToReplace, replaceMent);
+                    }
+                    else
+                    {
+                        targetName = originName.Replace(ToReplace, replaceMent);
+                    }
+
+                    DataList[i].Target = Path.Combine(originDir, targetName);
                 }
             }
         }

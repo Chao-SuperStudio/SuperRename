@@ -33,7 +33,7 @@ namespace SuperRename
             InitializeComponent();
             vieModel = new VieModel_Main();
             this.DataContext = vieModel;
-            ScanDir(@"D:\SuperStudio\SuperRename\SuperRename\Test");
+            //ScanDir(@"D:\SuperStudio\SuperRename\SuperRename\Test");
         }
 
         private void DataGrid_Drop(object sender, DragEventArgs e)
@@ -95,8 +95,18 @@ namespace SuperRename
                     }
                     try
                     {
-                        File.Move(vieModel.DataList[i].Source, vieModel.DataList[i].Target);
-                        success.Add(data);
+                        if (FileUtil.IsFile(vieModel.DataList[i].Source))
+                        {
+                            File.Move(vieModel.DataList[i].Source, vieModel.DataList[i].Target);
+                            success.Add(data);
+                        }
+                        else
+                        {
+                            Directory.Move(vieModel.DataList[i].Source, vieModel.DataList[i].Target);
+                            success.Add(data);
+                        }
+
+
                     }
                     catch (Exception ex)
                     {
@@ -110,6 +120,8 @@ namespace SuperRename
 
             vieModel.CanRun = false;
         }
+
+
 
         private bool CheckNameProper()
         {
@@ -282,6 +294,11 @@ namespace SuperRename
         }
 
         private void OpenDir(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddExt(object sender, RoutedEventArgs e)
         {
 
         }
